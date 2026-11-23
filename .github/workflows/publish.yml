@@ -50,3 +50,7 @@ jobs:
           name: dist
           path: dist/
       - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          # 重发同一个 Release（或重复触发 workflow）时不因"文件已存在"变红。
+          # 版本号没变就不该重复上传——这是幂等，不是掩盖问题。
+          skip-existing: true
