@@ -1,0 +1,39 @@
+name: Bug report
+description: Something measured wrong, crashed, or produced a misleading report
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. A breakdown is only useful if you can tell **what was measured
+        and what was not** — so please include the report's status lines when you can.
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Release tag, or the commit you installed (`git rev-parse --short HEAD`)
+    validations: { required: true }
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Where did it happen
+      options: [CLI (reelens), DSH plugin tools, DSH panel]
+    validations: { required: true }
+  - type: textarea
+    id: what
+    attributes:
+      label: What did you expect, and what happened instead
+    validations: { required: true }
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: |
+        Paste the failing section of `breakdown.json` (or the relevant `report.md` lines), plus
+        `reelens probe` output. Remove anything private first.
+      render: text
+  - type: input
+    id: media
+    attributes:
+      label: Media characteristics
+      description: Duration, resolution, codec, has audio, has narration — no need for the actual file or URL

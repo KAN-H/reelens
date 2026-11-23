@@ -1,0 +1,32 @@
+name: Feature request
+description: Propose a new measurement or a change to an existing one
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This project has one hard rule for new measurements: **it must be clear how it was
+        measured, and what it cannot tell you.** Proposals that state their limits up front
+        get merged fastest.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What question would this help answer
+    validations: { required: true }
+  - type: textarea
+    id: method
+    attributes:
+      label: How could it be measured
+      description: Tool, parameters, cost, and whether it needs an external model or service
+    validations: { required: true }
+  - type: textarea
+    id: status
+    attributes:
+      label: Which status should it claim
+      description: MEASURED (method calibrated), DERIVED (proxy), or ASSUMED (inference) — and why
+    validations: { required: true }
+  - type: textarea
+    id: limits
+    attributes:
+      label: When would this be wrong
+      description: The cases where the number exists but the conclusion does not hold
