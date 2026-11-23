@@ -1,0 +1,44 @@
+{
+  "name": "reelens-dsh-plugin",
+  "version": "0.1.0",
+  "private": true,
+  "description": "把视频/音频拆成结构化报告（镜头/抽帧/口播/节奏/音频）的 DSH 插件：Host 薄壳 + 自带 Python 核心。",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "lib",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "docs",
+    "scripts",
+    "icon.svg",
+    "README.md",
+    "LICENSE",
+    "PRIVACY.md",
+    "SECURITY.md",
+    "THIRD_PARTY_NOTICES.md",
+    "CONTRIBUTING.md"
+  ],
+  "scripts": {
+    "test": "node test-host.mjs && node test-client.mjs && node test-load.mjs && node test-ptc.mjs"
+  },
+  "license": "Apache-2.0",
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web"
+    }
+  }
+}

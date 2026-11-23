@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Video breakdown">
+  <rect width="64" height="64" rx="14" fill="#101728"/>
+  <g fill="none" stroke="#5ad1c8" stroke-width="3" stroke-linejoin="round">
+    <rect x="10" y="16" width="30" height="22" rx="4"/>
+    <path d="M10 23h30M10 31h30"/>
+    <path d="M15 16v22M35 16v22"/>
+  </g>
+  <g fill="#ffd166">
+    <rect x="14" y="43" width="8" height="6" rx="1.5"/>
+    <rect x="26" y="43" width="8" height="6" rx="1.5"/>
+    <rect x="38" y="43" width="8" height="6" rx="1.5"/>
+  </g>
+  <circle cx="45" cy="24" r="10" fill="none" stroke="#ffffff" stroke-width="3"/>
+  <path d="M52 32l6 6" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+</svg>

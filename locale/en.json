@@ -1,0 +1,24 @@
+{
+  "meta": {
+    "title": "Video breakdown",
+    "description": "Break one video or podcast into a structured report: shot table, frames and composition, transcript, on-screen text, editing rhythm, audio and BGM. A checklist is confirmed before anything runs; untested fields are labelled explicitly.",
+    "detail": "docs/DETAIL.md"
+  },
+  "panel": {
+    "title": "Video breakdown",
+    "subtitle": "Link → checklist → breakdown → report",
+    "source": "Source (URL or local path)",
+    "tier": "Tier",
+    "items": "Sections",
+    "plan": "Build checklist",
+    "run": "Start breakdown",
+    "refresh": "Refresh",
+    "report": "Report",
+    "frames": "Shot frames",
+    "vision": "Image egress",
+    "unknowns": "Untested",
+    "idle": "Paste a link or a local file, then build the checklist first.",
+    "no_frames": "No frames yet",
+    "confirm_hint": "The plan_id is the confirmation token for this exact configuration; changing parameters requires a new checklist."
+  }
+}

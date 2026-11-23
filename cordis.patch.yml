@@ -1,0 +1,7 @@
+# video-breakdown bundle patch — 把拆解插件行插入组合树。
+#
+# **新增行必须包在 `insert:` 里**：裸写 `- id: …` 是对已存在行的定向覆盖，
+# 组合树里没有该 id 时会被跳过（并打 warning），插件永远不会挂载。
+- insert:
+    - id: video-breakdown
+      name: 'reelens-dsh-plugin'

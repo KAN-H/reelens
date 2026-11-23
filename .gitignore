@@ -1,0 +1,15 @@
+# 仓库内不提交的东西（开源前逐条核对过：没有任何凭据、浏览器 profile、运行时状态）
+.venv*/
+.tmp/
+.models/
+outputs/
+*.egg-info/
+__pycache__/
+*.pyc
+.pytest_cache/
+.dev-notes/gates/*/work/
+.dev-notes/gates/*/images/
+node_modules/
+.cache/
+.dev-notes/
+

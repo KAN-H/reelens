@@ -1,0 +1,94 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  python:
+    name: python ${{ matrix.python }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ['3.10', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install ffmpeg (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      - name: Install ffmpeg (Windows)
+        if: runner.os == 'Windows'
+        run: choco install ffmpeg -y --no-progress
+
+      - name: Install core package
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e "python[scenes,images]" pytest
+
+      - name: Unit tests (no network, no ffmpeg needed)
+        run: python -m pytest python/tests -q
+
+      - name: CLI self-check
+        run: |
+          python -m reelens.cli probe --json
+          python -c "import json; from reelens import paths; print(json.dumps(paths.tool_report(), ensure_ascii=False))"
+
+  node:
+    name: plugin contracts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Syntax check
+        run: |
+          node --check index.js
+          node --check client.js
+          node --check lib/capabilities.js
+
+      - name: Host contract tests
+        run: node test-host.mjs
+
+      - name: Client bundle contract tests
+        run: node test-client.mjs
+
+      - name: Load smoke (registers 6 tools + 7 routes against a fake context)
+        run: node test-load.mjs
+
+      - name: PTC contract (canonical JSON, no prose parsing, no side effects)
+        run: node test-ptc.mjs
+
+  package:
+    name: package manifest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Validate package.json / locale / icon
+        run: |
+          node -e "
+          const fs=require('fs');
+          const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));
+          for (const key of ['index.js','client.js','cordis.patch.yml','icon.svg','README.md']) {
+            if (!fs.existsSync(key)) throw new Error('missing '+key);
+          }
+          if (!pkg.exports['./client']) throw new Error('missing ./client export');
+          if (!pkg.dsh || pkg.dsh.client.platform !== 'web') throw new Error('dsh.client.platform must be web');
+          for (const file of ['locale/en.json','locale/zh.json']) {
+            const doc=JSON.parse(fs.readFileSync(file,'utf8'));
+            if (!doc.meta || !doc.meta.title || !doc.meta.description) throw new Error(file+' missing meta');
+          }
+          console.log('manifest ok');
+          "

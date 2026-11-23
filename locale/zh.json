@@ -1,0 +1,24 @@
+{
+  "meta": {
+    "title": "视频拆解",
+    "description": "把一条视频或播客拆成结构化报告：镜头表、抽帧与构图、字幕/口播、画面文案、剪辑节奏、音频与 BGM。先出清单再执行，未测项会显式标注。",
+    "detail": "docs/DETAIL.md"
+  },
+  "panel": {
+    "title": "视频拆解",
+    "subtitle": "链接 → 清单 → 拆解 → 报告",
+    "source": "来源（URL 或本地路径）",
+    "tier": "档位",
+    "items": "拆解条目",
+    "plan": "生成清单",
+    "run": "开始拆解",
+    "refresh": "刷新",
+    "report": "报告",
+    "frames": "镜头帧",
+    "vision": "视觉外发",
+    "unknowns": "未测项",
+    "idle": "填一个链接或本地文件，先点「生成清单」。",
+    "no_frames": "还没有帧",
+    "confirm_hint": "清单里的 plan_id 就是这次确认的凭据；参数改了必须重新生成。"
+  }
+}
