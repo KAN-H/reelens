@@ -119,7 +119,7 @@ def home() -> Path:
 def hf_cache_dir() -> Path:
     """ASR 模型缓存目录——**不能靠继承 `HF_HOME`**。
 
-    2026-11-23 真实事故：系统级 `HF_HOME=D:\\dev\\caches\\HF_Cache`（空的），模型实际下在
+    2026-11-23 真实事故：系统级 `HF_HOME` 指向一个空目录，而模型实际下在
     插件仓库的 `.models/hf`。命令行里手动设了 `HF_HOME` 所以跑得很好，但宿主插件起的子进程
     继承系统变量 → faster-whisper 找不到模型 → 静默回落到 whisper.cpp → 产出幻觉。
     **"在我机器上能跑"就是这么来的。**

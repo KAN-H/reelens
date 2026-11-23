@@ -13,3 +13,8 @@ node_modules/
 .cache/
 .dev-notes/
 
+.gitnexus/
+graphify-out/
+AGENTS.md
+CLAUDE.md
+.claude/
