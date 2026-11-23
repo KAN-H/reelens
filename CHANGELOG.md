@@ -6,6 +6,16 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.1.1] — 2026-11-23
+
+Packaging and docs only; no behaviour change.
+
+### Added
+
+- Badges (CI, PyPI, licence, Python) in the package description — PyPI's renderer drops
+  external screenshots, so the description now leads with badges that do render, plus an
+  explicit link to the panel screenshot on GitHub.
+
 ## [0.1.0] — 2026-11-23
 
 First public release. Two deliverables in one repository: the `reelens-core` Python

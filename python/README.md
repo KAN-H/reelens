@@ -1,5 +1,10 @@
 # reelens
 
+[![CI](https://github.com/KAN-H/reelens/actions/workflows/ci.yml/badge.svg)](https://github.com/KAN-H/reelens/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/reelens)](https://pypi.org/project/reelens/)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue)](https://github.com/KAN-H/reelens/blob/main/LICENSE)
+[![Python](https://img.shields.io/badge/python-3.10%20%7C%203.12-3776AB)](https://github.com/KAN-H/reelens/blob/main/python/pyproject.toml)
+
 **Turn one video or podcast into a structured breakdown report** — shots, keyframes,
 transcript, on-screen text, editing rhythm, audio — where every field says *how it was
 measured* and *what it cannot tell you*.

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "reelens"
-version = "0.1.0"
+version = "0.1.1"
 description = "Turn one video or podcast into a structured breakdown report: shots, frames, transcript, rhythm and audio — every field labelled by how it was measured."
 readme = "README.md"
 requires-python = ">=3.10"
