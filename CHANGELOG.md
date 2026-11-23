@@ -39,7 +39,7 @@ exposes it as six chat tools plus a panel.
 - **DSH plugin**: six tools (`breakdown_plan / run / status / report / frames / probe`),
   seven same-origin routes, and a three-column panel with job history, conclusion card,
   keyframe grid, shot table, transcript, summary and an explicit "unknown / degraded" list.
-- **Tests**: 26 Python unit tests, 41 Node contract checks (host, client bundle, load
+- **Tests**: 26 Python unit tests, 42 Node contract checks (host, client bundle, load
   smoke, PTC canonical-JSON), and a gate script set for the measurements this project
   depends on.
 
