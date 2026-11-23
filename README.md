@@ -5,6 +5,7 @@ transcript, on-screen text, editing rhythm, audio — where every field says *ho
 measured* and *what it cannot tell you*.
 
 [![CI](https://github.com/KAN-H/reelens/actions/workflows/ci.yml/badge.svg)](https://github.com/KAN-H/reelens/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/reelens)](https://pypi.org/project/reelens/)
 [![Release](https://img.shields.io/github/v/release/KAN-H/reelens)](https://github.com/KAN-H/reelens/releases)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.12-3776AB)](python/pyproject.toml)
@@ -56,32 +57,24 @@ Two examples of that stance being *useful*:
 
 ## Install
 
-**From this repository** (works today — no PyPI account involved):
-
 ```bash
-pip install "reelens[asr,scenes,audio,images] @ https://github.com/KAN-H/reelens/releases/download/v0.1.0/reelens-0.1.0-py3-none-any.whl"
-```
-
-**From source** (editable, for development):
-
-```bash
-git clone https://github.com/KAN-H/reelens && cd reelens/python
-pip install -e ".[asr,scenes,audio,images]"
-```
-
-Then check what is available:
-
-```bash
-reelens probe
+pip install "reelens[asr,scenes,audio,images]"   # pick the extras you need
+reelens probe                                    # what is available right now
 ```
 
 `ffmpeg`/`ffprobe` must be on `PATH`. ASR, scene detection, beat analysis and image work are
 optional extras — without them those sections report `SKIPPED` with a reason instead of
 failing the run.
 
-> `pip install reelens` on PyPI is not published yet (the maintainer account is pending).
-> The wheel and sdist attached to each release are byte-identical to what will be uploaded,
-> with `SHA256SUMS.txt` alongside them.
+From source, for development:
+
+```bash
+git clone https://github.com/KAN-H/reelens && cd reelens/python
+pip install -e ".[asr,scenes,audio,images]"
+```
+
+Each release also carries the wheel, sdist and `SHA256SUMS.txt` as assets, if you prefer to
+install without PyPI.
 
 ## Use
 
