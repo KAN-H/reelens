@@ -25,8 +25,22 @@ evidence for design decisions, including the ones that concluded **not** to buil
 
 ## Third-party code
 
-No third-party source is copied into this repository. Optional runtime dependencies and
-their licenses are listed in `THIRD_PARTY_NOTICES.md`.
+No third-party source is copied into this repository. This was checked, not assumed:
+
+| Check | Result |
+|---|---|
+| Foreign copyright / SPDX headers in the tree | none (only this project's own `LICENSE`) |
+| Vendored libraries, generated bundles or binaries | none |
+| How upstream libraries are used | `import` inside functions, or as external processes (`ffmpeg`, `whisper-cli`, `yt-dlp`) |
+| Algorithm provenance | dHash and the FFmpeg scene-score idiom follow published descriptions; adaptive cut detection, the frame-difference rhythm, the status vocabulary and the extractive summary are original |
+
+Calling a library through its public API does not make this project a derivative work of it,
+and nothing here is licensed under a copyleft licence inherited from an upstream library.
+The **one** copyleft caveat is environmental: if you redistribute an FFmpeg binary that was
+built with `--enable-gpl`, *that binary* is GPL — this repository never bundles one. See
+`THIRD_PARTY_NOTICES.md`.
+
+Optional runtime dependencies and their licences are listed in `THIRD_PARTY_NOTICES.md`.
 
 ## Assets
 

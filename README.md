@@ -107,6 +107,21 @@ the client bundle is fetched when the page boots.
   measurements
 - [`PROVENANCE.md`](PROVENANCE.md) — how this code came to be, and what it is *not*
 
+## Credits
+
+This project is a thin layer over excellent tools, none of which are bundled here:
+[FFmpeg](https://ffmpeg.org/) (scene score, loudness, silence, decoding),
+[whisper.cpp](https://github.com/ggerganov/whisper.cpp) and
+[faster-whisper](https://github.com/SYSTRAN/faster-whisper) (speech),
+[PySceneDetect](https://www.scenedetect.com/) (optional cross-check for cut detection),
+[librosa](https://librosa.org/) (beats), [Pillow](https://python-pillow.org/) (image work)
+and [yt-dlp](https://github.com/yt-dlp/yt-dlp) (URL sources).
+
+No third-party source code is copied into this repository — those libraries are imported or
+invoked as external programs. Licenses, including the **GPL caveat for `--enable-gpl`
+FFmpeg builds** (which you must check with `ffmpeg -L` before redistributing a bundle), are
+listed in [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
+
 ## License
 
-Apache-2.0. Third-party components are listed in [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
+Apache-2.0. See [`LICENSE`](LICENSE) and [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
