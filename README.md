@@ -56,14 +56,32 @@ Two examples of that stance being *useful*:
 
 ## Install
 
+**From this repository** (works today — no PyPI account involved):
+
 ```bash
-pip install "reelens[asr,scenes,audio,images]"    # pick the extras you need
-reelens probe                                     # what is available right now
+pip install "reelens[asr,scenes,audio,images] @ https://github.com/KAN-H/reelens/releases/download/v0.1.0/reelens-0.1.0-py3-none-any.whl"
+```
+
+**From source** (editable, for development):
+
+```bash
+git clone https://github.com/KAN-H/reelens && cd reelens/python
+pip install -e ".[asr,scenes,audio,images]"
+```
+
+Then check what is available:
+
+```bash
+reelens probe
 ```
 
 `ffmpeg`/`ffprobe` must be on `PATH`. ASR, scene detection, beat analysis and image work are
 optional extras — without them those sections report `SKIPPED` with a reason instead of
 failing the run.
+
+> `pip install reelens` on PyPI is not published yet (the maintainer account is pending).
+> The wheel and sdist attached to each release are byte-identical to what will be uploaded,
+> with `SHA256SUMS.txt` alongside them.
 
 ## Use
 
