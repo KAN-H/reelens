@@ -1,0 +1,52 @@
+# 触发方式：发布一个 GitHub Release（或手动 workflow_dispatch）。
+# 认证方式：PyPI **Trusted Publishing**（OIDC），仓库里不存任何 API token。
+#   一次性配置：PyPI → Your projects → Publishing → Add a pending publisher
+#     PyPI Project Name: reelens
+#     Owner: KAN-H    Repository: reelens
+#     Workflow name: publish.yml    Environment: pypi
+name: Publish to PyPI
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: build sdist + wheel
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install build backend
+        run: python -m pip install --upgrade build
+      - name: Build
+        working-directory: python
+        run: python -m build
+      - name: Check metadata
+        working-directory: python
+        run: |
+          python -m pip install --upgrade twine
+          python -m twine check dist/*
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: python/dist/
+
+  publish:
+    name: upload to PyPI
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/reelens/
+    permissions:
+      id-token: write          # OIDC 换取 PyPI 短期凭据，不需要 token
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1

@@ -3,22 +3,35 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "reelens-core"
+name = "reelens"
 version = "0.1.0"
-description = "把视频/音频拆成结构化报告：镜头切分、抽帧、口播转写、节奏与音频测量"
+description = "Turn one video or podcast into a structured breakdown report: shots, frames, transcript, rhythm and audio — every field labelled by how it was measured."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "Apache-2.0" }
 authors = [{ name = "reelens contributors" }]
-keywords = ["video", "breakdown", "shot-detection", "asr", "ffmpeg", "dsh"]
+keywords = ["video", "audio", "breakdown", "shot-detection", "transcription", "whisper", "ffmpeg", "deepseek-harness"]
 classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
   "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.12",
   "License :: OSI Approved :: Apache Software License",
   "Operating System :: OS Independent",
+  "Topic :: Multimedia :: Video",
+  "Topic :: Multimedia :: Sound/Audio :: Analysis",
 ]
+
 #: 核心依赖刻意保持为**零**：只用标准库 + 外部可执行文件（ffmpeg/ffprobe）。
 #: 可选能力各自一组，装不上就 SKIPPED 并给出安装提示，不影响主流程。
 dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/KAN-H/reelens"
+Repository = "https://github.com/KAN-H/reelens"
+Issues = "https://github.com/KAN-H/reelens/issues"
+Changelog = "https://github.com/KAN-H/reelens/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
 download = ["yt-dlp>=2024.1"]
