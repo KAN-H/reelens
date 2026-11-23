@@ -10,6 +10,8 @@ repository, which adds six chat tools and a panel on top of it.
 
 ![The reelens panel](https://raw.githubusercontent.com/KAN-H/reelens/main/docs/images/panel.png)
 
+*Screenshot not showing above? [Open it on GitHub](https://github.com/KAN-H/reelens/blob/main/docs/images/panel.png).*
+
 ## Install
 
 ```bash
