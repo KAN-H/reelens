@@ -37,9 +37,14 @@ jobs:
         run: python -m pytest python/tests -q
 
       - name: CLI self-check
+        env:
+          PYTHONIOENCODING: utf-8
         run: |
-          python -m reelens.cli probe --json
-          python -c "import json; from reelens import paths; print(json.dumps(paths.tool_report(), ensure_ascii=False))"
+          # `probe` 没有 --json 参数（它本来只输出 JSON），且可选依赖缺失时返回非零——
+          # 所以这里允许非零退出，改为**校验输出内容**，别用 `|| true` 把真错误一起吞掉。
+          python -m reelens.cli --help
+          python -m reelens.cli probe > probe.json || true
+          python -c "import json; d = json.load(open('probe.json', encoding='utf-8')); assert d.get('tools'), 'probe reported no tools'; print('probe ok:', ', '.join(d['tools']))"
 
   node:
     name: plugin contracts
