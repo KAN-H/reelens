@@ -62,7 +62,9 @@ pip install "reelens[asr,scenes,audio,images]"   # pick the extras you need
 reelens probe                                    # what is available right now
 ```
 
-`ffmpeg`/`ffprobe` must be on `PATH`. ASR, scene detection, beat analysis and image work are
+`ffmpeg`/`ffprobe` must be on `PATH` for the CLI. The DeepSeek Harness plugin also ships both
+binaries as npm dependencies (see below), so a plugin install needs no system FFmpeg.
+ASR, scene detection, beat analysis and image work are
 optional extras — without them those sections report `SKIPPED` with a reason instead of
 failing the run.
 
@@ -90,9 +92,15 @@ vision model (a 45-minute audio then takes ~9 minutes instead of ~15).
 ### As a DeepSeek Harness plugin
 
 ```bash
+pwsh -File scripts/setup.ps1                    # Windows; or: sh scripts/setup.sh
 dsh plugin --profile web add /path/to/reelens   # or add a link: entry to the profile
 dsh stop && dsh start                           # the host loads plugin code at startup
 ```
+
+The setup script is idempotent: it runs `npm install --omit=dev` (the bundled FFmpeg/FFprobe),
+creates `.venv-breakdown`, installs the Python core, and finishes with `reelens probe`.
+The core resolves `ffmpeg`/`ffprobe` in this order: `REELENS_*` (or legacy `BREAKDOWN_*`)
+env var → the plugin's own `node_modules` → `PATH`.
 
 Then either ask the agent (tools `breakdown_plan / run / status / report / frames / probe`)
 or open the **Breakdown** entry in the sidebar. Reload the page after the first restart —

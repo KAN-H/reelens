@@ -57,7 +57,7 @@
 | 变量 | 作用 |
 |---|---|
 | `BREAKDOWN_PYTHON` | 指定 Python 解释器（缺省用插件目录下的 `.venv-breakdown`） |
-| `BREAKDOWN_FFMPEG` / `BREAKDOWN_FFPROBE` | 指定 ffmpeg/ffprobe（缺省查 PATH） |
+| `REELENS_FFMPEG` / `REELENS_FFPROBE`（旧名 `BREAKDOWN_*` 仍认） | 指定 ffmpeg/ffprobe（缺省先查插件自带的 npm 二进制，再查 PATH） |
 | `BREAKDOWN_WHISPER_CPP` / `BREAKDOWN_WHISPER_MODEL` | whisper.cpp 二进制与模型 |
 | `BREAKDOWN_FW_MODEL` / `BREAKDOWN_FW_COMPUTE` / `BREAKDOWN_FW_THREADS` | faster-whisper 模型/量化/线程 |
 | `AMDGPU_API_KEY` | 视觉链第一档（免费额度） |
@@ -67,7 +67,6 @@
 本机安装：
 
 ```powershell
-python -m venv .venv-breakdown
-.\.venv-breakdown\Scripts\python.exe -m pip install -e python[all]
-.\.venv-breakdown\Scripts\python.exe -m reelens.cli probe
+# 幂等：安装 npm 自带的 ffmpeg/ffprobe、Python 环境与核心包，最后自检
+pwsh -File .\scripts\setup.ps1
 ```

@@ -174,7 +174,7 @@ def run_command(args) -> int:
     else:
         transcript = stage("asr", lambda: asr.transcribe(
             media, work_dir=work, duration_s=duration,
-            has_audio=bool(info.get("has_audio")), preferred=args.asr_engine))
+            has_audio=info.get("has_audio"), preferred=args.asr_engine))
 
     audio_pack = {
         "loudness": (stage("loudness", lambda: audio.loudness(media))
