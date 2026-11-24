@@ -123,6 +123,8 @@ def conclusion(payload: dict) -> dict:
         kind = "口播 + 字幕驱动（话在讲，画面靠元素变化）"
     elif narration == "present":
         kind = "口播为主、画面变化较少"
+    elif narration == "absent":
+        kind = "无口播，画面按常规节奏切换"
     else:
         kind = "无法判定（口播状态未知）"
 

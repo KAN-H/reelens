@@ -21,6 +21,7 @@
 from __future__ import annotations
 
 import os
+import platform
 import shutil
 import sys
 from pathlib import Path
@@ -42,27 +43,53 @@ def _first_file(*candidates: str) -> str:
     return ""
 
 
+def _node_platform_dir() -> str:
+    """@ffmpeg-installer / @ffprobe-installer 的平台目录名。"""
+    system = {"win32": "win32", "darwin": "darwin"}.get(sys.platform, "linux")
+    machine = platform.machine().lower()
+    arch = {
+        "amd64": "x64", "x86_64": "x64",
+        "arm64": "arm64", "aarch64": "arm64",
+        "i386": "ia32", "i686": "ia32", "x86": "ia32",
+        "armv7l": "arm",
+    }.get(machine, machine)
+    return f"{system}-{arch}"
+
+
+def _bundled_npm_binary(installer: str, executable: str) -> str:
+    """DSH 插件 npm 依赖自带的可执行文件；纯 pip 安装时目录不存在，直接跳过。"""
+    suffix = ".exe" if sys.platform == "win32" else ""
+    candidate = (REPO_DIR / "node_modules" / installer / _node_platform_dir()
+                 / f"{executable}{suffix}")
+    return str(candidate) if candidate.is_file() else ""
+
+
 def ffmpeg_path() -> str:
-    """ffmpeg。顺序：`REELENS_FFMPEG`（旧名 `BREAKDOWN_FFMPEG` 仍认）→ PATH。"""
+    """ffmpeg。顺序：显式环境变量 → 插件自带 npm 二进制 → PATH。"""
     return _first_file(_env("REELENS_FFMPEG"), _env("BREAKDOWN_FFMPEG")) \
+        or _bundled_npm_binary("@ffmpeg-installer", "ffmpeg") \
         or shutil.which("ffmpeg") or ""
 
 
 def ffprobe_path() -> str:
-    """ffprobe。顺序：`REELENS_FFPROBE` → 与 ffmpeg 同源的安装布局 → PATH。
+    """ffprobe。顺序：显式环境变量 → 插件自带 / 与 ffmpeg 同源布局 → PATH。
 
-    之所以要找"同源布局"：`@ffprobe-installer` 与 `@ffmpeg-installer` 是两个 npm 包，
-    ffprobe **不在** ffmpeg 那个目录里；只按 PATH 找会拿不到。
+    `@ffprobe-installer` 与 `@ffmpeg-installer` 是两个 npm 包，ffprobe **不在**
+    ffmpeg 那个目录里；只按 PATH 找会拿不到。
     """
     explicit = _first_file(_env("REELENS_FFPROBE"), _env("BREAKDOWN_FFPROBE"))
     if explicit:
         return explicit
-    audio = Path(ffmpeg_path()) if ffmpeg_path() else None
-    if audio is not None:
-        sibling = audio.parent.parent.parent / "@ffprobe-installer" / "win32-x64" / "ffprobe.exe"
+    bundled = _bundled_npm_binary("@ffprobe-installer", "ffprobe")
+    if bundled:
+        return bundled
+    ffmpeg = Path(ffmpeg_path()) if ffmpeg_path() else None
+    if ffmpeg is not None:
+        sibling = (ffmpeg.parent.parent.parent / "@ffprobe-installer"
+                   / _node_platform_dir() / f"ffprobe{'.exe' if sys.platform == 'win32' else ''}")
         if sibling.is_file():
             return str(sibling)
-        for parent in audio.parents:
+        for parent in ffmpeg.parents:
             for candidate in parent.glob("@ffprobe-installer/*/ffprobe*"):
                 if candidate.is_file():
                     return str(candidate)

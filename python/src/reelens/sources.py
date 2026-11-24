@@ -28,6 +28,10 @@ DEFAULT_MAX_HEIGHT = 480
 DOWNLOAD_TIMEOUT_S = 1800.0
 
 _URL_RE = re.compile(r"^https?://", re.I)
+_MEDIA_EXTS = {
+    ".mp4", ".mkv", ".webm", ".mov", ".avi", ".flv", ".m4v", ".ts",
+    ".m4a", ".mp3", ".aac", ".opus", ".ogg", ".wav", ".flac",
+}
 
 
 def is_url(text: str) -> bool:
@@ -94,15 +98,33 @@ def resolve_url(url: str, *, out_dir: str | Path, max_height: int = DEFAULT_MAX_
 
     stdout = (proc.stdout or "").strip().splitlines()
     media = ""
+    printed_media: list[str] = []
     title = ""
     for line in stdout:
         if line and Path(line).is_file():
             media = line
+            printed_media.append(line)
         elif line and not title and not line.startswith("["):
             title = line
+    candidates = sorted(work.glob("source.*"), key=lambda p: p.stat().st_mtime, reverse=True)
+    media_candidates = [p for p in candidates if p.suffix.lower() in _MEDIA_EXTS]
+    # yt-dlp 在找不到 ffmpeg 时可能仍 returncode=0，但留下视频流 + 音频流两个文件，
+    # 并对每一路都打印 filepath。旧代码取最后一路（通常 .m4a）当完整视频，后续便谎称
+    # "没有音轨/没有画面"。分离流没合并是取源失败，绝不能用单一路径冒充完整素材。
+    separate_streams = (len(set(printed_media)) > 1
+                        or (not printed_media and len(media_candidates) > 1))
+    if proc.returncode == 0 and separate_streams:
+        tail = " / ".join((proc.stderr or "").strip().splitlines()[-3:])
+        if ffmpeg:
+            reason = ("yt-dlp 下载了多个媒体文件但未合并，不能把其中一路当成完整素材"
+                      + (f"；输出尾部：{tail}" if tail else ""))
+        else:
+            reason = ("视频/音频分离流已下载，但找不到 ffmpeg，未合并成可拆解的媒体；"
+                      "请安装插件 npm 依赖，或设 REELENS_FFMPEG / BREAKDOWN_FFMPEG")
+        return status.field(status.FAILED, reason=reason, method="yt-dlp",
+                            artifacts=[str(p) for p in media_candidates])
     if not media:
-        candidates = sorted(work.glob("source.*"), key=lambda p: p.stat().st_mtime, reverse=True)
-        media = str(candidates[0]) if candidates else ""
+        media = str(media_candidates[0]) if media_candidates else ""
     if proc.returncode != 0 or not media or not Path(media).is_file():
         tail = (proc.stderr or "").strip().splitlines()[-3:]
         return status.failed(

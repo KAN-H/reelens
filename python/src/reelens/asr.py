@@ -370,7 +370,7 @@ def speech_present_probe(wav: str | Path) -> bool | None:
 
 
 def transcribe(media: str | Path, *, work_dir: str | Path, duration_s: float,
-               has_audio: bool, preferred: str = "", timeout: float = DEFAULT_TIMEOUT_S) -> dict:
+               has_audio: bool | None, preferred: str = "", timeout: float = DEFAULT_TIMEOUT_S) -> dict:
     """按"内嵌字幕 → whisper.cpp → faster-whisper"取口播文本。
 
     @param preferred: 强制指定引擎（`embedded` / `whisper.cpp` / `faster-whisper`）
@@ -386,6 +386,8 @@ def transcribe(media: str | Path, *, work_dir: str | Path, duration_s: float,
         if preferred == "embedded":
             return embedded
 
+    if has_audio is None:
+        return status.skipped("媒体探针未完成，音轨状态未知；不能按“没有音轨”处理", method="asr")
     if not has_audio:
         return status.skipped("没有音轨，无法转写（也没有内嵌字幕）", method="asr")
 

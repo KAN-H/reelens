@@ -32,6 +32,10 @@
   "scripts": {
     "test": "node test-host.mjs && node test-client.mjs && node test-load.mjs && node test-ptc.mjs"
   },
+  "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "@ffprobe-installer/ffprobe": "^2.1.2"
+  },
   "license": "Apache-2.0",
   "dsh": {
     "bundle": {

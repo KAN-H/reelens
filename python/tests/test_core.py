@@ -129,6 +129,21 @@ def test_conclusion_identifies_static_background_mg():
     assert item["signals"]["shot_detection_degenerate"] is True
 
 
+def test_conclusion_no_speech_normal_rhythm_is_not_unknown():
+    """narration 已实测为 absent 时，结论不许再说"口播状态未知"（实测回归：
+    149s 无声视频、4.42 切/分、非退化 → 旧代码落进 else，同一句里又写"全片无人声"）。"""
+    probe = status.field(status.MEASURED, method="ffprobe", duration_s=149.0, portrait=False)
+    transcript = status.skipped("no_speech_detected：VAD 全片没有语音")
+    transcript["speech_present"] = False
+    editing = {"frame_diff": {"status": status.DERIVED, "shot_rate_per_min": 4.42,
+                              "change_rate_per_min": 14.85, "degenerate": False}}
+    item = report.conclusion({"probe": probe, "transcript": transcript,
+                              "editing": editing, "visual": {}})
+    assert "口播状态未知" not in item["type"]
+    assert "无口播" in item["type"]
+    assert item["signals"]["narration"] == "absent"
+
+
 def test_conclusion_flags_talking_head():
     probe = status.field(status.MEASURED, method="ffprobe", duration_s=60.0, portrait=True)
     transcript = status.field(status.MEASURED, method="asr", entries=[{"from": 0, "to": 1, "content": "x"}])
